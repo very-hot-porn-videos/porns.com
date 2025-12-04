@@ -1,45 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Very Hot Porn Videos</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/responsive.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feelnice Food Store</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
 </head>
-<body class="bg-gray-900 text-white font-sans">
+<body>
 
-  <!-- Header / Navbar -->
-  <header class="header">
-    <div class="container flex justify-between items-center py-4">
-      <h1 class="text-3xl font-bold text-red-500">🔥 Very Hot Porn Videos</h1>
-      <nav>
-        <a href="#contact" class="nav-link">Contact</a>
-        <a href="#buildings" class="nav-link">Categories</a>
-      </nav>
-    </div>
-  </header>
+    <!-- ================= NAVBAR ================= -->
+    <header class="navbar">
+        <div class="logo">Feelnice</div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-btn">Home</a></li>
+                <li><a href="#categories" class="nav-btn">Categories</a></li>
+                <li><a href="#about" class="nav-btn">About</a></li>
+                <li><a href="#contact" class="nav-btn">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
-  <!-- Hero Section -->
-  <section class="hero text-center py-12">
-    <h2 class="text-4xl font-bold mb-4">Explore Thousands of Hot Categories</h2>
-    <p class="text-gray-300 mb-6">Click on any category to discover vivid rooms and request access on Telegram.</p>
-    <a href="#buildings" class="btn-red">Start Browsing 🔥</a>
-  </section>
+    <!-- ================= HOME SECTION ================= -->
+    <section id="home" class="section home-section">
+        <div class="home-container">
+            <h1>Fresh • Fast • Delivered</h1>
+            <p>Your trusted online shop for fresh fruits, vegetables, snacks & nuts.</p>
 
-  <!-- Buildings / Categories -->
-  <section id="buildings" class="container py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-    <!-- JavaScript will dynamically insert Building cards here -->
-  </section>
+            <button class="primary-btn" onclick="scrollToSection('categories')">
+                Shop Now →
+            </button>
+        </div>
+    </section>
 
-  <!-- Contact -->
-  <footer id="contact" class="footer py-6 text-center text-gray-400">
-    <p>Contact me on <a href="https://t.me/YourTelegram" class="text-red-500">Telegram</a> for access and payments.</p>
-    <p>© 2025 Very Hot Porn Videos. All rights reserved.</p>
-  </footer>
+    <!-- ================= CATEGORIES ================= -->
+    <section id="categories" class="section categories-section">
+        <h2>Shop By Category</h2>
 
-  <!-- JS -->
-  <script src="js/main.js"></script>
+        <div class="categories-grid">
+
+            <div class="cat-card" onclick="openCategory('fruits')">
+                <h3>🍎 Fruits</h3>
+                <p>Fresh apples, berries, bananas & more.</p>
+            </div>
+
+            <div class="cat-card" onclick="openCategory('vegetables')">
+                <h3>🥦 Vegetables</h3>
+                <p>Healthy organic greens delivered fast.</p>
+            </div>
+
+            <div class="cat-card" onclick="openCategory('snacks')">
+                <h3>🥜 Snacks & Nuts</h3>
+                <p>Delicious nuts, dried fruits & more.</p>
+            </div>
+
+            <div class="cat-card" onclick="openCategory('specials')">
+                <h3>🔥 Specials</h3>
+                <p>Discounts & limited-time offers.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ================= ABOUT ================= -->
+    <section id="about" class="section about-section">
+        <h2>About Feelnice</h2>
+        <p>
+            We deliver fresh groceries within **2 hours** to your doorstep.
+            All payments are done securely through Bank or PayPal after 
+            you contact us on Telegram to confirm your order.
+        </p>
+    </section>
+
+    <!-- ================= CONTACT ================= -->
+    <section id="contact" class="section contact-section">
+        <h2>Contact Us</h2>
+
+        <div class="contact-box">
+            <p>📍 Location: Kenya</p>
+            <p>📞 WhatsApp: +254 xxx xxx xxx</p>
+            <p>✉ Email: feelnice@shop.com</p>
+
+            <button class="tg-btn" onclick="openTelegram()">
+                Contact on Telegram
+            </button>
+        </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer>
+        <p>© 2025 Feelnice Market. All rights reserved.</p>
+    </footer>
+
+    <!-- JS -->
+    <script src="main.js"></script>
+
 </body>
 </html>
-
