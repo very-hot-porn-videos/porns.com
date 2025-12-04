@@ -1,1 +1,45 @@
+body {
+  margin: 0;
+  background-color: #1a1a1a;
+  color: white;
+}
+
+.header {
+  background-color: #111;
+  padding: 1rem 0;
+}
+
+.nav-link {
+  margin-left: 1rem;
+  color: #fff;
+  text-decoration: none;
+}
+
+.nav-link:hover {
+  color: #f87171; /* red-400 */
+}
+
+.btn-red {
+  background-color: #ef4444; /* red-500 */
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.btn-red:hover {
+  background-color: #dc2626; /* red-600 */
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.hero h2 {
+  color: #f87171; /* red-400 */
+}
 
