@@ -1,84 +1,143 @@
-// Get category from URL
-const params = new URLSearchParams(window.location.search);
-const category = params.get("category") || "All";
+/* ============================================================
+   MAIN.JS — Handles:
+   - Load Buildings on index.html
+   - Load Rooms on building.html
+   - Shuffle Rooms
+   - Search & Filter
+   - Modal View
+   ============================================================ */
 
-// Fetch rooms
-fetch("data/rooms.json")
-  .then(res => res.json())
-  .then(data => {
-    // Filter by category (optional: match first tag)
-    let rooms = data.filter(room => category === "All" || room.tags.includes(category));
+/* ============ UTILITY FUNCTIONS ============ */
 
-    // Shuffle rooms
-    rooms = rooms.sort(() => Math.random() - 0.5);
-
-    // Populate tag filter dropdown
-    const tagSet = new Set();
-    rooms.forEach(r => r.tags.forEach(t => tagSet.add(t)));
-    const tagFilter = document.getElementById("tagFilter");
-    tagSet.forEach(tag => {
-      const option = document.createElement("option");
-      option.value = tag;
-      option.textContent = tag;
-      tagFilter.appendChild(option);
-    });
-
-    const roomsGrid = document.getElementById("roomsGrid");
-
-    function displayRooms(filteredRooms) {
-      roomsGrid.innerHTML = "";
-      filteredRooms.forEach(room => {
-        const card = document.createElement("div");
-        card.className = "room-card rounded-lg shadow-lg overflow-hidden cursor-pointer hover:scale-105 transition duration-300 border " + (room.hotPick ? "border-yellow-400" : "border-gray-700");
-        card.innerHTML = `
-          <img src="${room.thumbnail}" alt="${room.title}" class="w-full h-48 object-cover">
-          <div class="p-4 bg-gray-800">
-            <h3 class="text-xl font-bold ${room.hotPick ? "text-yellow-400" : "text-red-500"}">${room.title}</h3>
-            <p class="text-gray-300 mt-2">${room.description}</p>
-            ${room.hotPick ? `<span class="inline-block mt-2 bg-yellow-400 text-black px-2 py-1 rounded text-sm font-bold">🔥 Hot Pick</span>` : ""}
-          </div>
-        `;
-        card.onclick = () => openModal(room);
-        roomsGrid.appendChild(card);
-      });
-    }
-
-    // Initial display
-    displayRooms(rooms);
-
-    // Search & Tag Filter
-    document.getElementById("search").addEventListener("input", e => {
-      const term = e.target.value.toLowerCase();
-      const filtered = rooms.filter(r => r.title.toLowerCase().includes(term) || r.description.toLowerCase().includes(term));
-      const tag = tagFilter.value;
-      const finalFiltered = filtered.filter(r => tag === "All" || r.tags.includes(tag));
-      displayRooms(finalFiltered);
-    });
-
-    tagFilter.addEventListener("change", e => {
-      const tag = e.target.value;
-      const term = document.getElementById("search").value.toLowerCase();
-      const filtered = rooms.filter(r => r.title.toLowerCase().includes(term) || r.description.toLowerCase().includes(term));
-      const finalFiltered = filtered.filter(r => tag === "All" || r.tags.includes(tag));
-      displayRooms(finalFiltered);
-    });
-  });
-
-// Modal Functions
-const modal = document.getElementById("modal");
-const modalClose = document.getElementById("modalClose");
-const modalTitle = document.getElementById("modalTitle");
-const modalDescription = document.getElementById("modalDescription");
-const modalThumbnail = document.getElementById("modalThumbnail");
-const modalTelegram = document.getElementById("modalTelegram");
-
-function openModal(room) {
-  modalTitle.textContent = room.title;
-  modalDescription.textContent = room.description;
-  modalThumbnail.src = room.thumbnail;
-  modalTelegram.href = "https://t.me/YourTelegram";
-  modal.classList.remove("hidden");
+// Shuffle array (Fisher-Yates)
+function shuffleArray(array) {
+  let i = array.length;
+  while (i !== 0) {
+    let r = Math.floor(Math.random() * i);
+    i--;
+    [array[i], array[r]] = [array[r], array[i]];
+  }
+  return array;
 }
 
-modalClose.onclick = () => modal.classList.add("hidden");
-window.onclick = (e) => { if (e.target === modal) modal.classList.add("hidden"); }
+// Get URL parameter
+function getParam(key) {
+  const params = new URLSearchParams(window.location.search);
+  return params.get(key);
+}
+
+/* ============================================================
+   LOAD BUILDINGS (index.html)
+   ============================================================ */
+if (document.body.classList.contains("index-page")) {
+  fetch("data/buildings.json")
+    .then(res => res.json())
+    .then(buildings => {
+      const container = document.getElementById("buildingsGrid");
+
+      buildings.forEach(b => {
+        container.innerHTML += `
+          <div class="card" onclick="location.href='building.html?category=${encodeURIComponent(b.slug)}'">
+            <img src="${b.thumbnail}" class="card-img" alt="${b.name}">
+            <div class="card-body">
+              <h3 class="card-title">${b.name}</h3>
+              <p class="card-desc">${b.description}</p>
+            </div>
+          </div>
+        `;
+      });
+    });
+}
+
+/* ============================================================
+   LOAD ROOMS (building.html)
+   ============================================================ */
+if (document.body.classList.contains("building-page")) {
+  const category = getParam("category");
+
+  fetch("data/rooms.json")
+    .then(res => res.json())
+    .then(rooms => {
+      // Filter by category
+      let filtered = rooms.filter(r => r.category === category);
+
+      // Shuffle every page load
+      filtered = shuffleArray(filtered);
+
+      const roomsGrid = document.getElementById("roomsGrid");
+      const tagFilter = document.getElementById("tagFilter");
+      const searchInput = document.getElementById("search");
+
+      // Unique tags for filter
+      let tags = new Set();
+      filtered.forEach(r => r.tags.forEach(t => tags.add(t)));
+
+      // Insert filter options
+      tags.forEach(tag => {
+        tagFilter.innerHTML += `<option value="${tag}">${tag}</option>`;
+      });
+
+      // Render Rooms
+      function displayRooms(list) {
+        roomsGrid.innerHTML = "";
+        list.forEach(r => {
+          roomsGrid.innerHTML += `
+            <div class="room-card" data-title="${r.title}" data-tags="${r.tags.join(',')}">
+              <img src="${r.thumbnail}" class="room-img" alt="${r.title}" onclick="openModal('${r.title}', '${r.thumbnail}', \`${r.description}\`)">
+              <div class="room-body">
+                <h3 class="room-title">${r.title}</h3>
+                <p class="room-price text-red-400 font-bold">${r.price}</p>
+              </div>
+            </div>
+          `;
+        });
+      }
+
+      displayRooms(filtered);
+
+      /* ============ SEARCH ============ */
+      searchInput.addEventListener("input", () => {
+        const text = searchInput.value.toLowerCase();
+        const result = filtered.filter(r =>
+          r.title.toLowerCase().includes(text) ||
+          r.description.toLowerCase().includes(text)
+        );
+        displayRooms(result);
+      });
+
+      /* ============ TAG FILTER ============ */
+      tagFilter.addEventListener("change", () => {
+        const tag = tagFilter.value;
+
+        if (tag === "All") {
+          displayRooms(filtered);
+        } else {
+          const result = filtered.filter(r => r.tags.includes(tag));
+          displayRooms(result);
+        }
+      });
+
+    });
+}
+
+/* ============================================================
+   MODAL HANDLING
+   ============================================================ */
+function openModal(title, thumbnail, description) {
+  document.getElementById("modalTitle").textContent = title;
+  document.getElementById("modalThumbnail").src = thumbnail;
+  document.getElementById("modalDescription").textContent = description;
+
+  document.getElementById("modal").classList.remove("hidden");
+}
+
+document.getElementById("modalClose")?.addEventListener("click", () => {
+  document.getElementById("modal").classList.add("hidden");
+});
+
+// Close modal when clicking outside
+document.getElementById("modal")?.addEventListener("click", (e) => {
+  if (e.target.id === "modal") {
+    document.getElementById("modal").classList.add("hidden");
+  }
+});
