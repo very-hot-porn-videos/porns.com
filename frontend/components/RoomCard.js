@@ -1,30 +1,44 @@
+import React, { useState } from "react";
+import { useInView } from "@react-intersection-observer";
+
 export default function RoomCard({ title, description, thumbnail, embedUrl, priceBTC, btcpayInvoice }) {
   const [showEmbed, setShowEmbed] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
+  const { ref, inView } = useInView({
+    triggerOnce: true, // Load once when visible
+    threshold: 0.1,
+  });
+
   return (
-    <div className="bg-gray-700 rounded-lg shadow-lg overflow-hidden transition duration-300 hover:bg-gray-600">
+    <div ref={ref} className="bg-gray-700 rounded-lg shadow-lg overflow-hidden transition duration-300 hover:bg-gray-600">
+      {/* Lazy-loaded Thumbnail / Embed */}
       {!showEmbed ? (
-        <div onClick={() => setShowEmbed(true)} className="cursor-pointer">
-          <img src={thumbnail} alt={title} className="w-full h-48 object-cover" />
-          <div className="p-4">
-            <h3 className="text-xl font-bold text-red-500">{title}</h3>
-            <p className="text-gray-300">{description}</p>
-            <p className="mt-2 text-yellow-400 font-semibold">Price: {priceBTC} BTC</p>
-            <p className="mt-2 text-sm text-gray-400">Click to preview video</p>
+        inView && (
+          <div onClick={() => setShowEmbed(true)} className="cursor-pointer">
+            <img src={thumbnail} alt={title} className="w-full h-48 object-cover" loading="lazy" />
+            <div className="p-4">
+              <h3 className="text-xl font-bold text-red-500">{title}</h3>
+              <p className="text-gray-300">{description}</p>
+              <p className="mt-2 text-yellow-400 font-semibold">Price: {priceBTC} BTC</p>
+              <p className="mt-2 text-sm text-gray-400">Click to preview video</p>
+            </div>
           </div>
-        </div>
+        )
       ) : (
-        <div className="w-full h-48">
-          <iframe
-            src={embedUrl}
-            width="100%"
-            height="100%"
-            allowFullScreen
-            className="rounded-lg"
-            title={title}
-          ></iframe>
-        </div>
+        inView && (
+          <div className="w-full h-48">
+            <iframe
+              src={embedUrl}
+              width="100%"
+              height="100%"
+              allowFullScreen
+              className="rounded-lg"
+              title={title}
+              loading="lazy"
+            ></iframe>
+          </div>
+        )
       )}
 
       {/* Request Access Button */}
@@ -48,12 +62,9 @@ export default function RoomCard({ title, description, thumbnail, embedUrl, pric
 
             <h3 className="text-xl text-white font-bold mb-2">Choose Payment Method:</h3>
             <div className="flex flex-col gap-3">
-              {/* BTC Payment */}
               <a href={btcpayInvoice} target="_blank" rel="noopener noreferrer" className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-2 px-4 rounded text-center">
                 Pay with BTC
               </a>
-
-              {/* Alternative Payment */}
               <a href="https://t.me/YourTelegram" target="_blank" rel="noopener noreferrer" className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded text-center">
                 Pay via Alternative Method
               </a>
