@@ -2,43 +2,26 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import RoomCard from "../../components/RoomCard";
 
-// Example Rooms Data (replace with API call or backend data)
-const allRooms = {
-  amateur: [
-    { id: 1, title: "Hot Amateur 1", description: "Intense amateur video.", thumbnail: "https://via.placeholder.com/320x180", embedUrl: "https://www.xvideos.com/embedvideo/12345", priceBTC: 0.001 },
-    { id: 2, title: "Hot Amateur 2", description: "Shocking amateur moments.", thumbnail: "https://via.placeholder.com/320x180", embedUrl: "https://www.xvideos.com/embedvideo/12346", priceBTC: 0.002 },
-    // Add more rooms
-  ],
-  blondes: [
-    { id: 3, title: "Blonde Beauty 1", description: "Alluring blonde video.", thumbnail: "https://via.placeholder.com/320x180", embedUrl: "https://www.xvideos.com/embedvideo/22345", priceBTC: 0.0015 },
-    { id: 4, title: "Blonde Beauty 2", description: "Vivid blonde moments.", thumbnail: "https://via.placeholder.com/320x180", embedUrl: "https://www.xvideos.com/embedvideo/22346", priceBTC: 0.0025 },
-  ],
-  // Add more categories
-};
-
-// Utility function to shuffle array
-const shuffleArray = (array) => {
-  return array.sort(() => Math.random() - 0.5);
-};
-
 export default function BuildingPage() {
   const router = useRouter();
   const { slug } = router.query;
   const [rooms, setRooms] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (slug && allRooms[slug]) {
-      setRooms(shuffleArray(allRooms[slug]));
-    }
+    if (!slug) return;
+    setLoading(true);
+    fetch(`/api/rooms/${slug}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setRooms(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   }, [slug]);
 
-  if (!slug || !allRooms[slug]) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
-        <h2 className="text-2xl text-red-500">Category not found.</h2>
-      </div>
-    );
-  }
+  if (loading) return <p className="text-white text-center mt-20">Loading...</p>;
+  if (!rooms.length) return <p className="text-red-500 text-center mt-20">Category not found.</p>;
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -63,6 +46,7 @@ export default function BuildingPage() {
             thumbnail={room.thumbnail}
             embedUrl={room.embedUrl}
             priceBTC={room.priceBTC}
+            btcpayInvoice={room.btcpayInvoice} // Pass dynamic invoice
           />
         ))}
       </section>
@@ -75,4 +59,3 @@ export default function BuildingPage() {
     </div>
   );
 }
-
