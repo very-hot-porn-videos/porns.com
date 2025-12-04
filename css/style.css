@@ -1,45 +1,226 @@
+/* General Styles */
 body {
   margin: 0;
-  background-color: #1a1a1a;
+  background-color: #111;
   color: white;
+  font-family: 'Arial', sans-serif;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Header / Navbar */
 .header {
-  background-color: #111;
+  background-color: #1b1b1b;
   padding: 1rem 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}
+
+.header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .nav-link {
   margin-left: 1rem;
-  color: #fff;
-  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s;
 }
 
 .nav-link:hover {
-  color: #f87171; /* red-400 */
+  color: #f87171;
 }
 
+/* Buttons */
 .btn-red {
-  background-color: #ef4444; /* red-500 */
+  background-color: #ef4444;
   padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
-  text-decoration: none;
-  color: #fff;
   font-weight: bold;
-  transition: 0.3s;
+  transition: background 0.3s, transform 0.3s;
 }
 
 .btn-red:hover {
-  background-color: #dc2626; /* red-600 */
+  background-color: #dc2626;
+  transform: scale(1.05);
 }
 
+/* Hero Section */
+.hero {
+  text-align: center;
+  padding: 6rem 1rem;
+}
+
+.hero h2 {
+  font-size: 3rem;
+  color: #f87171;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  color: #ccc;
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+/* Grid Layout */
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
 }
 
-.hero h2 {
-  color: #f87171; /* red-400 */
+#buildings,
+#roomsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
 }
 
+/* Cards */
+.building-card,
+.room-card {
+  background-color: #1e1e1e;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.6);
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.building-card:hover,
+.room-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(255, 0, 0, 0.5);
+}
+
+.building-card img,
+.room-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.building-card h3,
+.room-card h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.room-card h3 {
+  margin-bottom: 0.25rem;
+}
+
+.room-card p {
+  color: #ccc;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Hot Pick Badge */
+.room-card span {
+  display: inline-block;
+  background-color: #facc15;
+  color: #000;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-weight: bold;
+  font-size: 0.8rem;
+}
+
+/* Filters */
+input[type="text"],
+select {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  font-size: 1rem;
+}
+
+/* Modal */
+#modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0,0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+#modal.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#modal .modal-content {
+  background-color: #1e1e1e;
+  padding: 2rem;
+  border-radius: 1rem;
+  max-width: 500px;
+  width: 90%;
+  position: relative;
+  animation: scaleIn 0.3s ease forwards;
+}
+
+@keyframes scaleIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+#modal img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+#modal h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #f87171;
+  margin-bottom: 0.5rem;
+}
+
+#modal p {
+  color: #ccc;
+  margin-bottom: 1rem;
+}
+
+#modalClose {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  font-size: 2rem;
+  color: #f87171;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+#modalClose:hover {
+  color: #dc2626;
+}
+
+/* Footer */
+.footer {
+  background-color: #1b1b1b;
+  padding: 2rem 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #aaa;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero h2 {
+    font-size: 2.2rem;
+  }
+}
