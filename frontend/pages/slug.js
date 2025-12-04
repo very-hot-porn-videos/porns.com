@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import RoomCard from "../../components/RoomCard";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function BuildingPage() {
   const router = useRouter();
@@ -8,11 +9,14 @@ export default function BuildingPage() {
 
   const [rooms, setRooms] = useState([]);
   const [filteredRooms, setFilteredRooms] = useState([]);
+  const [displayedRooms, setDisplayedRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [selectedTag, setSelectedTag] = useState("All");
+
+  const ITEMS_PER_LOAD = 12; // Rooms to load per scroll
 
   // Shuffle helper
   const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
@@ -27,6 +31,7 @@ export default function BuildingPage() {
       const shuffled = shuffleArray(data);
       setRooms(shuffled);
       setFilteredRooms(shuffled);
+      setDisplayedRooms(shuffled.slice(0, ITEMS_PER_LOAD));
     } catch (err) {
       console.error(err);
     }
@@ -54,7 +59,15 @@ export default function BuildingPage() {
     });
 
     setFilteredRooms(filtered);
+    setDisplayedRooms(filtered.slice(0, ITEMS_PER_LOAD));
   }, [searchTerm, minPrice, maxPrice, selectedTag, rooms]);
+
+  // Load more rooms on scroll
+  const fetchMoreRooms = () => {
+    const currentLength = displayedRooms.length;
+    const more = filteredRooms.slice(currentLength, currentLength + ITEMS_PER_LOAD);
+    setDisplayedRooms([...displayedRooms, ...more]);
+  };
 
   if (loading) return <p className="text-white text-center mt-20">Loading...</p>;
   if (!rooms.length) return <p className="text-red-500 text-center mt-20">Category not found.</p>;
@@ -75,7 +88,7 @@ export default function BuildingPage() {
         </div>
       </header>
 
-      {/* Controls: Refresh, Search, Price & Tag Filters */}
+      {/* Controls */}
       <div className="max-w-6xl mx-auto px-4 mt-6 flex flex-col sm:flex-row justify-between gap-4 flex-wrap">
         <button
           onClick={fetchRooms}
@@ -83,7 +96,6 @@ export default function BuildingPage() {
         >
           🔄 Refresh Rooms
         </button>
-
         <input
           type="text"
           placeholder="Search by title, description, or price..."
@@ -91,7 +103,6 @@ export default function BuildingPage() {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="p-2 rounded text-black flex-1 min-w-[200px]"
         />
-
         <input
           type="number"
           placeholder="Min BTC"
@@ -106,7 +117,6 @@ export default function BuildingPage() {
           onChange={(e) => setMaxPrice(e.target.value)}
           className="p-2 rounded text-black w-24"
         />
-
         <select
           value={selectedTag}
           onChange={(e) => setSelectedTag(e.target.value)}
@@ -118,24 +128,28 @@ export default function BuildingPage() {
         </select>
       </div>
 
-      {/* Rooms Grid */}
-      <section className="max-w-6xl mx-auto py-12 px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredRooms.length > 0 ? (
-          filteredRooms.map((room) => (
-            <RoomCard
-              key={room.id}
-              title={room.title}
-              description={room.description}
-              thumbnail={room.thumbnail}
-              embedUrl={room.embedUrl}
-              priceBTC={room.priceBTC}
-              btcpayInvoice={room.btcpayInvoice}
-            />
-          ))
-        ) : (
-          <p className="text-center col-span-full text-gray-400">No rooms match your filters.</p>
-        )}
-      </section>
+      {/* Infinite Scroll Rooms Grid */}
+      <InfiniteScroll
+        dataLength={displayedRooms.length}
+        next={fetchMoreRooms}
+        hasMore={displayedRooms.length < filteredRooms.length}
+        loader={<p className="text-center text-gray-400 mt-6">Loading more rooms...</p>}
+        endMessage={<p className="text-center text-gray-400 mt-6">No more rooms to show.</p>}
+        className="max-w-6xl mx-auto py-12 px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+      >
+        {displayedRooms.map((room) => (
+          <RoomCard
+            key={room.id}
+            title={room.title}
+            description={room.description}
+            thumbnail={room.thumbnail}
+            embedUrl={room.embedUrl}
+            priceBTC={room.priceBTC}
+            btcpayInvoice={room.btcpayInvoice}
+            hotPick={room.hotPick}
+          />
+        ))}
+      </InfiniteScroll>
 
       {/* Footer */}
       <footer id="contact" className="bg-gray-800 p-6 text-center text-gray-400">
