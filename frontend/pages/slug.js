@@ -5,15 +5,19 @@ import RoomCard from "../../components/RoomCard";
 export default function BuildingPage() {
   const router = useRouter();
   const { slug } = router.query;
+
   const [rooms, setRooms] = useState([]);
   const [filteredRooms, setFilteredRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [selectedTag, setSelectedTag] = useState("All");
 
   // Shuffle helper
   const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
 
-  // Fetch rooms from backend
+  // Fetch rooms
   const fetchRooms = async () => {
     if (!slug) return;
     setLoading(true);
@@ -33,20 +37,30 @@ export default function BuildingPage() {
     fetchRooms();
   }, [slug]);
 
-  // Search & filter
+  // Filter & Search
   useEffect(() => {
     const term = searchTerm.toLowerCase();
-    const filtered = rooms.filter(
-      (room) =>
+    const filtered = rooms.filter((room) => {
+      const matchesSearch =
         room.title.toLowerCase().includes(term) ||
         room.description.toLowerCase().includes(term) ||
-        room.priceBTC.toString().includes(term)
-    );
+        room.priceBTC.toString().includes(term);
+
+      const matchesMinPrice = minPrice ? room.priceBTC >= parseFloat(minPrice) : true;
+      const matchesMaxPrice = maxPrice ? room.priceBTC <= parseFloat(maxPrice) : true;
+      const matchesTag = selectedTag === "All" ? true : room.tags?.includes(selectedTag);
+
+      return matchesSearch && matchesMinPrice && matchesMaxPrice && matchesTag;
+    });
+
     setFilteredRooms(filtered);
-  }, [searchTerm, rooms]);
+  }, [searchTerm, minPrice, maxPrice, selectedTag, rooms]);
 
   if (loading) return <p className="text-white text-center mt-20">Loading...</p>;
   if (!rooms.length) return <p className="text-red-500 text-center mt-20">Category not found.</p>;
+
+  // Collect all tags for dropdown
+  const allTags = ["All", ...new Set(rooms.flatMap((room) => room.tags || []))];
 
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -61,21 +75,47 @@ export default function BuildingPage() {
         </div>
       </header>
 
-      {/* Controls: Refresh + Search */}
-      <div className="max-w-6xl mx-auto px-4 mt-6 flex flex-col sm:flex-row justify-between gap-4">
+      {/* Controls: Refresh, Search, Price & Tag Filters */}
+      <div className="max-w-6xl mx-auto px-4 mt-6 flex flex-col sm:flex-row justify-between gap-4 flex-wrap">
         <button
           onClick={fetchRooms}
           className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300"
         >
           🔄 Refresh Rooms
         </button>
+
         <input
           type="text"
           placeholder="Search by title, description, or price..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="p-2 rounded text-black flex-1"
+          className="p-2 rounded text-black flex-1 min-w-[200px]"
         />
+
+        <input
+          type="number"
+          placeholder="Min BTC"
+          value={minPrice}
+          onChange={(e) => setMinPrice(e.target.value)}
+          className="p-2 rounded text-black w-24"
+        />
+        <input
+          type="number"
+          placeholder="Max BTC"
+          value={maxPrice}
+          onChange={(e) => setMaxPrice(e.target.value)}
+          className="p-2 rounded text-black w-24"
+        />
+
+        <select
+          value={selectedTag}
+          onChange={(e) => setSelectedTag(e.target.value)}
+          className="p-2 rounded text-black"
+        >
+          {allTags.map((tag) => (
+            <option key={tag} value={tag}>{tag}</option>
+          ))}
+        </select>
       </div>
 
       {/* Rooms Grid */}
@@ -93,7 +133,7 @@ export default function BuildingPage() {
             />
           ))
         ) : (
-          <p className="text-center col-span-full text-gray-400">No rooms match your search.</p>
+          <p className="text-center col-span-full text-gray-400">No rooms match your filters.</p>
         )}
       </section>
 
