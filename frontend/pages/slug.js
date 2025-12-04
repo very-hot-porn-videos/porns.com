@@ -8,16 +8,25 @@ export default function BuildingPage() {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  // Shuffle helper
+  const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
+
+  // Fetch rooms from backend
+  const fetchRooms = async () => {
     if (!slug) return;
     setLoading(true);
-    fetch(`/api/rooms/${slug}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setRooms(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    try {
+      const res = await fetch(`/api/rooms/${slug}`);
+      const data = await res.json();
+      setRooms(shuffleArray(data));
+    } catch (err) {
+      console.error(err);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchRooms();
   }, [slug]);
 
   if (loading) return <p className="text-white text-center mt-20">Loading...</p>;
@@ -36,6 +45,16 @@ export default function BuildingPage() {
         </div>
       </header>
 
+      {/* Refresh Button */}
+      <div className="max-w-6xl mx-auto px-4 mt-6 flex justify-end">
+        <button
+          onClick={fetchRooms}
+          className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded transition duration-300"
+        >
+          🔄 Refresh Rooms
+        </button>
+      </div>
+
       {/* Rooms Grid */}
       <section className="max-w-6xl mx-auto py-12 px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {rooms.map((room) => (
@@ -46,7 +65,7 @@ export default function BuildingPage() {
             thumbnail={room.thumbnail}
             embedUrl={room.embedUrl}
             priceBTC={room.priceBTC}
-            btcpayInvoice={room.btcpayInvoice} // Pass dynamic invoice
+            btcpayInvoice={room.btcpayInvoice}
           />
         ))}
       </section>
