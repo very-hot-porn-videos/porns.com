@@ -1,1 +1,19 @@
+[
+  {
+    "id": 1,
+    "title": "Blonde Amateur Fun",
+    "description": "Vivid description of the scene goes here...",
+    "thumbnail": "images/rooms/room1.jpg",
+    "tags": ["Blonde", "Amateur"],
+    "hotPick": true
+  },
+  {
+    "id": 2,
+    "title": "Couple Action",
+    "description": "Another vivid description...",
+    "thumbnail": "images/rooms/room2.jpg",
+    "tags": ["Couple"],
+    "hotPick": false
+  }
+]
 
