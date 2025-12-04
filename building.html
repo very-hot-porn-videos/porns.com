@@ -1,56 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rooms - Very Hot Porn Videos</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/responsive.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building – Rooms</title>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="../css/style.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
 </head>
-<body class="bg-gray-900 text-white font-sans">
+<body>
 
-  <!-- Header -->
-  <header class="header">
-    <div class="container flex justify-between items-center py-4">
-      <h1 class="text-3xl font-bold text-red-500">🔥 Very Hot Porn Videos</h1>
-      <nav>
-        <a href="index.html" class="nav-link">Home</a>
-        <a href="#contact" class="nav-link">Contact</a>
-      </nav>
-    </div>
-  </header>
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="logo">🔥 Very Hot Videos</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="../contact.html">Contact</a>
+        </nav>
+    </header>
 
-  <!-- Filters / Search -->
-  <section class="container py-6 flex flex-wrap gap-4">
-    <input type="text" id="search" placeholder="Search Rooms..." class="p-2 rounded text-black flex-1 min-w-[200px]">
-    <select id="tagFilter" class="p-2 rounded text-black">
-      <option value="All">All Tags</option>
-    </select>
-  </section>
+    <!-- HERO SECTION -->
+    <section class="building-hero">
+        <h1 id="buildingTitle">Loading...</h1>
+        <p class="subtitle">Enjoy exclusive previews – updated on every refresh.</p>
+    </section>
 
-  <!-- Rooms Grid -->
-  <section id="roomsGrid" class="container py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-    <!-- Rooms will be dynamically inserted here -->
-  </section>
+    <!-- ROOMS CONTAINER -->
+    <section class="rooms-section">
+        <div id="roomsGrid" class="rooms-grid">
+            <!-- Rooms load here -->
+        </div>
+    </section>
 
-  <!-- Modal -->
-  <div id="modal" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center hidden z-50">
-    <div class="modal-content">
-      <span id="modalClose" class="absolute top-2 right-4 cursor-pointer text-red-500 text-2xl">&times;</span>
-      <img id="modalThumbnail" src="" alt="" class="w-full h-48 object-cover rounded mb-4">
-      <h3 id="modalTitle" class="text-xl font-bold text-red-500 mb-2"></h3>
-      <p id="modalDescription" class="text-gray-300 mb-4"></p>
-      <a id="modalTelegram" href="https://t.me/YourTelegram" target="_blank" class="btn-red w-full text-center inline-block">Request Access on Telegram</a>
-    </div>
-  </div>
+    <!-- FOOTER -->
+    <footer>
+        <p>© 2025 Very Hot Videos. All rights reserved.</p>
+        <p><a href="https://t.me/YOUR_TELEGRAM" class="telegram-link">Contact me on Telegram</a></p>
+    </footer>
 
-  <!-- Contact -->
-  <footer id="contact" class="footer py-6 text-center text-gray-400">
-    <p>Contact me on <a href="https://t.me/YourTelegram" class="text-red-500">Telegram</a> for access and payments.</p>
-    <p>© 2025 Very Hot Porn Videos. All rights reserved.</p>
-  </footer>
+    <!-- JS -->
+    <script src="../js/building.js"></script>
 
-  <!-- JS -->
-  <script src="js/main.js"></script>
 </body>
 </html>
