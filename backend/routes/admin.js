@@ -53,5 +53,7 @@ router.delete("/delete/:category/:id", (req, res) => {
   writeRooms(roomsData);
   res.json({ message: "Room deleted successfully" });
 });
+const adminRoutes = require("./routes/admin");
+app.use("/api/admin", adminRoutes);
 
 module.exports = router;
