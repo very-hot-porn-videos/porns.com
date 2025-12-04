@@ -1,19 +1,110 @@
 [
   {
     "id": 1,
-    "title": "Blonde Amateur Fun",
-    "description": "Vivid description of the scene goes here...",
-    "thumbnail": "images/rooms/room1.jpg",
-    "tags": ["Blonde", "Amateur"],
-    "hotPick": true
+    "category": "Blonde",
+    "title": "Playful Blonde On Bed",
+    "thumbnail": "images/rooms/blonde_1.jpg",
+    "description": "A sweet blonde teasing softly on a white bed, bright lighting, clear focus.",
+    "tags": ["soft", "solo", "bed"],
+    "price": "$4"
   },
   {
     "id": 2,
-    "title": "Couple Action",
-    "description": "Another vivid description...",
-    "thumbnail": "images/rooms/room2.jpg",
-    "tags": ["Couple"],
-    "hotPick": false
+    "category": "Blonde",
+    "title": "Blonde With Blue Lingerie",
+    "thumbnail": "images/rooms/blonde_2.jpg",
+    "description": "Gorgeous blonde posing in blue lingerie. High clarity, very expressive.",
+    "tags": ["lingerie", "posing"],
+    "price": "$4"
+  },
+  {
+    "id": 3,
+    "category": "Amateur",
+    "title": "Real Couple Self-Shot",
+    "thumbnail": "images/rooms/amateur_1.jpg",
+    "description": "Authentic home-shot video cover. Natural lighting, real vibes.",
+    "tags": ["couple", "home", "real"],
+    "price": "$5"
+  },
+  {
+    "id": 4,
+    "category": "Amateur",
+    "title": "Shy Girl Selfie Pose",
+    "thumbnail": "images/rooms/amateur_2.jpg",
+    "description": "Cute amateur girl taking mirror selfie in tight dress.",
+    "tags": ["mirror", "solo"],
+    "price": "$3"
+  },
+  {
+    "id": 5,
+    "category": "Lesbian",
+    "title": "Two Girls Kissing",
+    "thumbnail": "images/rooms/lesbian_1.jpg",
+    "description": "Beautiful soft-touch moment between two girls.",
+    "tags": ["soft", "kissing"],
+    "price": "$5"
+  },
+  {
+    "id": 6,
+    "category": "Lesbian",
+    "title": "Girlfriends On Sofa",
+    "thumbnail": "images/rooms/lesbian_2.jpg",
+    "description": "Cute sofa pose, slow intimacy, clean bright room.",
+    "tags": ["sofa", "couple"],
+    "price": "$5"
+  },
+  {
+    "id": 7,
+    "category": "MILF",
+    "title": "Mature Lady In Red Dress",
+    "thumbnail": "images/rooms/milf_1.jpg",
+    "description": "Elegant mature woman in stunning red dress.",
+    "tags": ["red", "dress", "mature"],
+    "price": "$6"
+  },
+  {
+    "id": 8",
+    "category": "MILF",
+    "title": "Confident MILF Mirror Shot",
+    "thumbnail": "images/rooms/milf_2.jpg",
+    "description": "Bold, confident milf taking a beautiful mirror pose.",
+    "tags": ["mirror", "mature"],
+    "price": "$5"
+  },
+  {
+    "id": 9,
+    "category": "Anal",
+    "title": "Brunette Preparing",
+    "thumbnail": "images/rooms/anal_1.jpg",
+    "description": "Clean soft-prep shot, bright lighting, clear details.",
+    "tags": ["prep", "soft"],
+    "price": "$8"
+  },
+  {
+    "id": 10,
+    "category": "Anal",
+    "title": "Redhead With Toys",
+    "thumbnail": "images/rooms/anal_2.jpg",
+    "description": "Redhead posing with toy set on bed, ultra HD detail.",
+    "tags": ["toys", "posing"],
+    "price": "$9"
+  },
+  {
+    "id": 11,
+    "category": "Threesome",
+    "title": "Two Girls One Guy Pose",
+    "thumbnail": "images/rooms/threesome_1.jpg",
+    "description": "Perfectly framed teaser of a trio.",
+    "tags": ["trio", "posing"],
+    "price": "$10"
+  },
+  {
+    "id": 12,
+    "category": "Couples",
+    "title": "Romantic Bedroom Pose",
+    "thumbnail": "images/rooms/couples_1.jpg",
+    "description": "Warm light, soft intimacy, cozy bedroom setting.",
+    "tags": ["romantic", "soft"],
+    "price": "$6"
   }
 ]
-
